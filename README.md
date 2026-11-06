@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Linnet
 
-## Getting Started
+**Concept · self-initiated**
 
-First, run the development server:
+Linnet is a launch page for a fictional invoicing product for freelancers and small software studios. It is a portfolio piece by [Abubakr Alsheikh](https://abubakr-alsheikh.netlify.app): the page a SaaS founder could put in front of customers, built with the care an engineer would want to read.
+
+**Status:** in development. Live: coming soon.
+
+## What it will do
+
+- **A working invoice in the hero.** You type line items, hours, a rate and a tax rate, pick a currency, and the invoice totals itself. Press Send and it moves from Draft to Sent to Paid.
+- **Features** explained with small diagrams that play once.
+- **Integrations** shown as categories (bank feeds, payments, accounting export, calendars, email), with no real brands.
+- **Pricing** with a monthly and yearly toggle. The prices are illustrative.
+- **Quotes, FAQ and a waitlist** form on Netlify Forms.
+- Light and dark themes, keyboard navigation and reduced-motion support from 360 px to 1920 px.
+
+Linnet, its company, customers and quotes are invented. Nothing on the page is a real offer.
+
+## Stack
+
+- [Next.js 16](https://nextjs.org) (App Router, Turbopack, Cache Components), React 19, TypeScript (strict)
+- Tailwind CSS 4 with design tokens in `@theme`, light and dark
+- [shadcn/ui](https://ui.shadcn.com) on Radix primitives for menus, dialogs and accordions, restyled to the tokens
+- MDX through `@next/mdx`: page copy lives in `src/content/*.mdx` and each file's fields are checked with [Zod](https://zod.dev)
+- [Motion](https://motion.dev) for the invoice demo and the price change
+- [Vitest](https://vitest.dev) for the invoice maths and the content schemas
+- Familjen Grotesk and Public Sans through `next/font`
+- Netlify (hosting and Forms)
+
+## Scripts
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run dev         # local dev server
+npm run build       # production build
+npm start           # serve the production build
+npm run lint        # ESLint
+npm run typecheck   # tsc --noEmit
+npm test            # Vitest
+npm run contrast    # WCAG contrast of every colour pair, both themes
+npm run screens -- http://localhost:3000 screenshots 360,768,1280,1920        # full-page screenshots
+npm run screens -- http://localhost:3000 screenshots/dark 360,1280 dark       # the same in dark mode
+npm run axe -- http://localhost:3000 360,1280                                 # axe-core scan
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The screenshot and axe scripts drive a local Chrome over the DevTools Protocol, with no extra dependencies. Node 24 (`.nvmrc`).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Quality targets
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Lighthouse mobile 95 or higher for performance, accessibility, best practices and SEO
+- Cumulative Layout Shift 0
+- axe-core: 0 violations in both themes
+- Works from 360 px to 1920 px, by keyboard, and with `prefers-reduced-motion`
 
-## Learn More
+## Author
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Designed and built by [Abubakr Alsheikh](https://abubakr-alsheikh.netlify.app). MIT licence.

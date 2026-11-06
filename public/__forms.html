@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <title>Form declarations</title>
+  </head>
+  <body>
+    <!--
+      Netlify Forms registers forms by parsing static HTML at deploy time. An
+      App Router page is not a static file, so this file is the declaration of
+      the waitlist form, and the React form posts here with fetch.
+      Every field the component sends must exist below with the same name, or
+      Netlify drops it from the submission.
+      Never add data-netlify or netlify-honeypot to the React form itself: the
+      Next.js adapter scans prerendered pages for them and fails the deploy.
+    -->
+    <form name="waitlist" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="hidden" name="form-name" value="waitlist" />
+      <input type="text" name="bot-field" />
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <select name="team">
+        <option value="solo">solo</option>
+        <option value="studio">studio</option>
+        <option value="agency">agency</option>
+      </select>
+      <select name="currency">
+        <option value="EUR">EUR</option>
+        <option value="USD">USD</option>
+        <option value="GBP">GBP</option>
+        <option value="other">other</option>
+      </select>
+      <textarea name="note"></textarea>
+    </form>
+  </body>
+</html>
