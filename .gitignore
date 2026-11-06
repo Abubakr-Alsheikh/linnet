@@ -39,3 +39,17 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# private agent workspace (never commit)
+.private/
+.claude/
+CLAUDE.md
+AGENTS.md
+
+# netlify
+.netlify/
+
+# local artefacts
+/screenshots/
+/lighthouse/
+*.stackdump
