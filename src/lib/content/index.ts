@@ -1,5 +1,6 @@
 import type { MDXContent } from "mdx/types";
 import { z } from "zod";
+import DemoBody, { meta as demoMeta } from "@/content/demo.mdx";
 import FaqBody, { meta as faqMeta } from "@/content/faq.mdx";
 import FeaturesBody, { meta as featuresMeta } from "@/content/features.mdx";
 import HeroBody, { meta as heroMeta } from "@/content/hero.mdx";
@@ -9,6 +10,7 @@ import PricingBody, { meta as pricingMeta } from "@/content/pricing.mdx";
 import QuotesBody, { meta as quotesMeta } from "@/content/quotes.mdx";
 import WaitlistBody, { meta as waitlistMeta } from "@/content/waitlist.mdx";
 import {
+  demoSchema,
   faqSchema,
   featuresSchema,
   heroSchema,
@@ -48,6 +50,7 @@ function load<S extends z.ZodType>(file: string, schema: S, meta: unknown, Body:
 
 export const layout = load("layout.mdx", layoutSchema, layoutMeta, LayoutBody);
 export const hero = load("hero.mdx", heroSchema, heroMeta, HeroBody);
+export const demo = load("demo.mdx", demoSchema, demoMeta, DemoBody);
 export const features = load("features.mdx", featuresSchema, featuresMeta, FeaturesBody);
 export const integrations = load("integrations.mdx", integrationsSchema, integrationsMeta, IntegrationsBody);
 export const pricing = load("pricing.mdx", pricingSchema, pricingMeta, PricingBody);

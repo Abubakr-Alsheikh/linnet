@@ -1,4 +1,7 @@
 import { z } from "zod";
+import { STATUSES } from "@/lib/invoice/demo-machine";
+import { checkDescription, parseQuantity, parseRate, parseTaxRate } from "@/lib/invoice/parse";
+import { CURRENCIES } from "@/lib/money";
 import { THEME_CHOICES } from "@/lib/theme";
 import { placeholders, splitAround } from "./template";
 
@@ -107,6 +110,87 @@ export const heroSchema = z.strictObject({
   secondaryCta: sectionLink,
   hint: copy,
 });
+
+// demo.mdx: every string on the hero's invoice, the fictional clients and
+// the starting lines. The body is the footnote under the sheet.
+const currency = z.enum(CURRENCIES);
+
+export const demoSchema = z
+  .strictObject({
+    title: copy,
+    number: copy,
+    from: z.strictObject({ label: copy, name: copy, line: copy }),
+    billTo: copy,
+    contact: template("email", "city"),
+    clients: z
+      .array(
+        z.strictObject({
+          id: sectionId,
+          name: copy,
+          // The reserved .example domain: no real inbox ever appears in the demo.
+          email: z.email().refine((email) => email.endsWith(".example"), "Use the reserved .example domain."),
+          city: copy,
+          currency,
+        }),
+      )
+      .min(1),
+    defaultClient: z.string(),
+    issued: copy,
+    due: copy,
+    terms: z.strictObject({
+      label: copy,
+      options: z.array(z.strictObject({ days: z.int().min(0).max(90), label: copy })).min(1),
+      default: z.int(),
+    }),
+    currency: z.strictObject({
+      label: copy,
+      options: z.array(z.strictObject({ value: currency, label: copy })).length(CURRENCIES.length),
+    }),
+    columns: z.strictObject({ description: copy, quantity: copy, quantityHint: copy, rate: copy, amount: copy }),
+    line: z.strictObject({ label: template("n"), add: copy, limit: copy, remove: template("n") }),
+    defaultLines: z
+      .array(z.strictObject({ description: copy, quantity: z.string(), rate: z.string() }))
+      .min(1)
+      .max(6)
+      .refine(
+        (lines) =>
+          lines.every(
+            (line) => checkDescription(line.description) === null && parseQuantity(line.quantity) !== null && parseRate(line.rate) !== null,
+          ),
+        "Every default line must parse.",
+      ),
+    totals: z.strictObject({ subtotal: copy, tax: copy, taxRate: copy, total: copy }),
+    defaultTaxRate: z.string().refine((rate) => parseTaxRate(rate) !== null, "The default tax rate must parse."),
+    status: z.record(z.enum(STATUSES), copy),
+    actions: z.strictObject({ send: copy, sending: copy, sent: copy, reset: copy }),
+    activity: z.strictObject({ sent: template("email"), viewed: template("client"), paid: copy }),
+    stamp: copy,
+    hints: z.strictObject({ zeroTotal: copy, invalid: copy, locked: copy }),
+    errors: z.strictObject({ descriptionEmpty: copy, descriptionLong: copy, quantity: copy, rate: copy, taxRate: copy }),
+    announce: z.strictObject({
+      total: template("total"),
+      added: template("n"),
+      removed: template("n"),
+      sending: template("client"),
+      sent: template("client"),
+      paid: template("total"),
+      reset: copy,
+    }),
+  })
+  .refine((demo) => demo.clients.some((client) => client.id === demo.defaultClient), {
+    message: "defaultClient must be one of the clients.",
+    path: ["defaultClient"],
+  })
+  .refine((demo) => demo.terms.options.some((option) => option.days === demo.terms.default), {
+    message: "terms.default must be one of the options.",
+    path: ["terms", "default"],
+  })
+  .refine((demo) => new Set(demo.currency.options.map((option) => option.value)).size === CURRENCIES.length, {
+    message: "List each currency once.",
+    path: ["currency", "options"],
+  });
+
+export type DemoContent = z.output<typeof demoSchema>;
 
 // features.mdx, integrations.mdx, pricing.mdx, faq.mdx: section headers.
 // The body is the section intro (empty for the FAQ).

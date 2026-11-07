@@ -1,0 +1,79 @@
+export const meta = {
+  title: "Invoice",
+  number: "LN-0042",
+  from: { label: "From", name: "Mira Holm", line: "Product design" },
+  billTo: "Bill to",
+  contact: "{email} · {city}",
+  clients: [
+    { id: "moss-lane", name: "Moss Lane Press", email: "accounts@mosslane.example", city: "Dublin", currency: "EUR" },
+    { id: "kettlebridge", name: "Kettlebridge Games", email: "billing@kettlebridge.example", city: "Bristol", currency: "GBP" },
+    { id: "ferngrove", name: "Ferngrove Analytics", email: "ap@ferngrove.example", city: "Austin", currency: "USD" },
+  ],
+  defaultClient: "moss-lane",
+  issued: "Issued",
+  due: "Due",
+  terms: {
+    label: "Payment terms",
+    options: [
+      { days: 0, label: "On receipt" },
+      { days: 7, label: "7 days" },
+      { days: 14, label: "14 days" },
+      { days: 30, label: "30 days" },
+    ],
+    default: 14,
+  },
+  currency: {
+    label: "Currency",
+    options: [
+      { value: "EUR", label: "Euro (EUR)" },
+      { value: "GBP", label: "Pound sterling (GBP)" },
+      { value: "USD", label: "US dollar (USD)" },
+    ],
+  },
+  columns: {
+    description: "Description",
+    quantity: "Qty",
+    quantityHint: "hours or units",
+    rate: "Rate",
+    amount: "Amount",
+  },
+  line: {
+    label: "Line {n}",
+    add: "Add a line",
+    limit: "Six lines is the most the demo holds.",
+    remove: "Remove line {n}",
+  },
+  defaultLines: [
+    { description: "Discovery workshop", quantity: "6", rate: "95.00" },
+    { description: "Interface design, checkout flow", quantity: "18.5", rate: "95.00" },
+  ],
+  totals: { subtotal: "Subtotal", tax: "Tax", taxRate: "Tax rate", total: "Total due" },
+  defaultTaxRate: "20",
+  status: { draft: "Draft", sending: "Sending", sent: "Sent", viewed: "Viewed", paid: "Paid" },
+  actions: { send: "Send invoice", sending: "Sending…", sent: "Sent", reset: "Start a new invoice" },
+  activity: { sent: "Sent to {email}", viewed: "Opened by {client}", paid: "Paid by card" },
+  stamp: "PAID",
+  hints: {
+    zeroTotal: "Add a quantity and a rate to send.",
+    invalid: "Fix the highlighted field to send.",
+    locked: "Sent invoices are locked. Start a new one to edit.",
+  },
+  errors: {
+    descriptionEmpty: "Describe the work.",
+    descriptionLong: "Keep it under 80 characters.",
+    quantity: "Use a number from 0 to 999.75.",
+    rate: "Use an amount from 0 to 100,000.",
+    taxRate: "Use a rate from 0 to 30%.",
+  },
+  announce: {
+    total: "Total due {total}.",
+    added: "Line {n} added.",
+    removed: "Line {n} removed.",
+    sending: "Sending invoice to {client}.",
+    sent: "Invoice sent to {client}.",
+    paid: "Paid in full: {total}.",
+    reset: "New invoice started.",
+  },
+};
+
+Demo only. Rates and tax are examples, not tax advice, and nothing is sent.

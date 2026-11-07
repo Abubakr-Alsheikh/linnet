@@ -2,9 +2,12 @@ import { readFileSync } from "node:fs";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
+import { STATUSES, createDemoState, evaluate } from "@/lib/invoice/demo-machine";
+import { formatMoney } from "@/lib/money";
 import { site } from "@/lib/site";
-import { faq, features, hero, integrations, layout, parseMeta, pricing, quotes, sections, waitlist } from "./index";
-import { copy, headline, heroSchema, template } from "./schemas";
+import { demoDefaults } from "./demo-defaults";
+import { demo, faq, features, hero, integrations, layout, parseMeta, pricing, quotes, sections, waitlist } from "./index";
+import { copy, demoSchema, headline, heroSchema, template } from "./schemas";
 
 const sectionIds = sections.map((section) => section.meta.id);
 const render = (Body: (typeof sections)[number]["Body"]) => renderToStaticMarkup(createElement(Body));
@@ -44,6 +47,43 @@ describe("content files", () => {
   it("put the concept disclaimer in the footer", () => {
     expect(render(layout.Body)).toContain("Linnet is a fictional product.");
     expect(layout.meta.footer.concept).toBe("Concept · self-initiated");
+  });
+});
+
+describe("demo.mdx", () => {
+  const defaults = demoDefaults(demo.meta);
+
+  it("starts on the COPY defaults: €2,327.50, €465.50, €2,793.00", () => {
+    const { totals, valid } = evaluate(createDemoState(defaults));
+    expect(valid).toBe(true);
+    expect([totals.subtotal, totals.tax, totals.total].map((minor) => formatMoney(minor, defaults.currency))).toEqual([
+      "€2,327.50",
+      "€465.50",
+      "€2,793.00",
+    ]);
+  });
+
+  it("bills Moss Lane Press in euro on 14-day terms by default", () => {
+    expect(defaults).toMatchObject({ clientId: "moss-lane", currency: "EUR", termsDays: 14, taxRate: "20" });
+  });
+
+  it("gives each fictional client a different currency and a .example address", () => {
+    const currencies = demo.meta.clients.map((client) => client.currency);
+    expect(new Set(currencies).size).toBe(demo.meta.clients.length);
+    for (const client of demo.meta.clients) expect(client.email).toMatch(/\.example$/);
+  });
+
+  it("names the send states the machine uses", () => {
+    expect(Object.keys(demo.meta.status).sort()).toEqual([...STATUSES].sort());
+  });
+
+  it("keeps the footnote in the body", () => {
+    expect(render(demo.Body)).toContain("nothing is sent");
+  });
+
+  it("rejects a client address outside .example", () => {
+    const clients = [{ ...demo.meta.clients[0], email: "accounts@mosslane.com" }];
+    expect(demoSchema.safeParse({ ...demo.meta, clients }).success).toBe(false);
   });
 });
 
