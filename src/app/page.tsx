@@ -4,7 +4,8 @@ import { SkipLink } from "@/components/layout/SkipLink";
 import { Hero } from "@/components/sections/Hero";
 import { Features } from "@/components/sections/Features";
 import { Integrations } from "@/components/sections/Integrations";
-import { Faq, Pricing, Quotes, Waitlist } from "@/components/sections/stubs";
+import { Pricing } from "@/components/sections/Pricing";
+import { Faq, Quotes, Waitlist } from "@/components/sections/stubs";
 import { layout } from "@/lib/content";
 
 /** The one page. A server component: only the interactive leaves inside it ship as client code. */
