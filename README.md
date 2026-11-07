@@ -4,7 +4,7 @@
 
 Linnet is a launch page for a fictional invoicing product for freelancers and small software studios. It is a portfolio piece by [Abubakr Alsheikh](https://abubakr-alsheikh.netlify.app): the page a SaaS founder could put in front of customers, built with the care an engineer would want to read.
 
-**Status:** in development. Live: coming soon.
+**Status:** in development. Live: [linnet-app.netlify.app](https://linnet-app.netlify.app) (the page shell is up; the invoice demo and the sections arrive next).
 
 ## What it will do
 
