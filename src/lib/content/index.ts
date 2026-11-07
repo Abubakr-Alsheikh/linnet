@@ -21,6 +21,7 @@ import RetainersBody, { meta as retainersMeta } from "@/content/features/retaine
 import HeroBody, { meta as heroMeta } from "@/content/hero.mdx";
 import IntegrationsBody, { meta as integrationsMeta } from "@/content/integrations.mdx";
 import LayoutBody, { meta as layoutMeta } from "@/content/layout.mdx";
+import NotFoundBody, { meta as notFoundMeta } from "@/content/not-found.mdx";
 import PricingBody, { meta as pricingMeta } from "@/content/pricing.mdx";
 import QuotesBody, { meta as quotesMeta } from "@/content/quotes.mdx";
 import WaitlistBody, { meta as waitlistMeta } from "@/content/waitlist.mdx";
@@ -33,6 +34,7 @@ import {
   heroSchema,
   integrationsSchema,
   layoutSchema,
+  notFoundSchema,
   pricingSchema,
   quotesSchema,
   waitlistSchema,
@@ -67,6 +69,7 @@ function load<S extends z.ZodType>(file: string, schema: S, meta: unknown, Body:
 
 export const layout = load("layout.mdx", layoutSchema, layoutMeta, LayoutBody);
 export const hero = load("hero.mdx", heroSchema, heroMeta, HeroBody);
+export const notFound = load("not-found.mdx", notFoundSchema, notFoundMeta, NotFoundBody);
 export const demo = load("demo.mdx", demoSchema, demoMeta, DemoBody);
 export const features = load("features.mdx", featuresSchema, featuresMeta, FeaturesBody);
 

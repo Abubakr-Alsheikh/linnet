@@ -77,6 +77,8 @@ export const layoutSchema = z.strictObject({
   wordmark: copy,
   tagline: copy,
   skipLink: copy,
+  /** The share image's alt text (opengraph-image.tsx). */
+  shareAlt: copy,
   nav: z.strictObject({
     label: copy,
     links: z.array(sectionLink).min(1),
@@ -102,6 +104,9 @@ export const layoutSchema = z.strictObject({
       path: ["creditLink"],
     }),
 });
+
+// not-found.mdx: the 404 page. The body is its one line.
+export const notFoundSchema = z.strictObject({ title: copy, link: copy });
 
 // hero.mdx: the first screen. The body is the lede.
 export const heroSchema = z.strictObject({

@@ -10,7 +10,7 @@ import { NAME_MAX, NOTE_MAX, TEAMS, WAITLIST_CURRENCIES } from "@/lib/waitlist";
 import { site } from "@/lib/site";
 import { demoDefaults } from "./demo-defaults";
 import { fill } from "./template";
-import { demo, faq, faqList, featureList, features, hero, integrations, layout, parseMeta, pricing, quotes, sections, waitlist } from "./index";
+import { demo, faq, faqList, notFound, featureList, features, hero, integrations, layout, parseMeta, pricing, quotes, sections, waitlist } from "./index";
 import { copy, demoSchema, headline, heroSchema, template } from "./schemas";
 
 const sectionIds = sections.map((section) => section.meta.id);
@@ -51,6 +51,18 @@ describe("content files", () => {
   it("put the concept disclaimer in the footer", () => {
     expect(render(layout.Body)).toContain("Linnet is a fictional product.");
     expect(layout.meta.footer.concept).toBe("Concept · self-initiated");
+  });
+});
+
+describe("share image and 404", () => {
+  it("describes the share image with the total the demo starts on", () => {
+    expect(layout.meta.shareAlt).toContain("€2,793.00");
+    expect(layout.meta.shareAlt).toContain(hero.meta.headline.title);
+  });
+
+  it("gives the 404 page a title, a line and a way back", () => {
+    expect(notFound.meta.title).toBe("Nothing at this address.");
+    expect(render(notFound.Body)).toBe("<p>The link may be old or mistyped.</p>");
   });
 });
 
