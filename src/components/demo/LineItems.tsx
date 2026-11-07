@@ -8,7 +8,7 @@ import { fill } from "@/lib/content/template";
 import type { Line, LineField } from "@/lib/invoice/demo-machine";
 import { durations } from "@/lib/motion";
 import { cn } from "@/lib/utils";
-import { DigitRoll } from "./DigitRoll";
+import { DigitRoll } from "@/components/motion/DigitRoll";
 
 /**
  * The invoice's lines, twice: a real table from `md`, and one labelled

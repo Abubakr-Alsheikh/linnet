@@ -10,9 +10,22 @@ import { cn } from "@/lib/utils";
  * put and a new leading digit simply appears. Only digits move: the
  * currency sign and separators swap in place. The first render is static,
  * and under reduced motion every change is a plain swap. The DOM is the same
- * either way, so the server HTML always hydrates cleanly.
+ * either way, so the server HTML always hydrates cleanly. `delay` (seconds)
+ * offsets the whole roll, for the pricing cards' left-to-right stagger.
+ * Needs a LazyMotion provider above it.
  */
-export function DigitRoll({ value, className }: { value: string; className?: string }) {
+export function DigitRoll({
+  value,
+  className,
+  delay = 0,
+  anchor = "end",
+}: {
+  value: string;
+  className?: string;
+  delay?: number;
+  /** "end" keys slots from the right (amounts with decimals); "start" from the left (left-aligned whole prices). */
+  anchor?: "start" | "end";
+}) {
   const reduce = useReducedMotion() ?? false;
   const chars = [...value];
 
@@ -22,7 +35,8 @@ export function DigitRoll({ value, className }: { value: string; className?: str
       <span aria-hidden="true" className="inline-flex">
         {chars.map((char, index) => {
           const fromRight = chars.length - 1 - index;
-          return <Slot key={fromRight} char={char} delay={fromRight * stagger.digits} still={reduce} />;
+          const key = anchor === "end" ? fromRight : index;
+          return <Slot key={key} char={char} delay={delay + fromRight * stagger.digits} still={reduce} />;
         })}
       </span>
     </span>

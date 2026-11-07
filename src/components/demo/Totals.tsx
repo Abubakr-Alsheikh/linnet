@@ -3,7 +3,7 @@
 import { CircleAlertIcon } from "lucide-react";
 import { AnimatePresence } from "motion/react";
 import type { KeyboardEvent } from "react";
-import { DigitRoll } from "./DigitRoll";
+import { DigitRoll } from "@/components/motion/DigitRoll";
 import { PaidStamp } from "./PaidStamp";
 
 export interface TotalsProps {
