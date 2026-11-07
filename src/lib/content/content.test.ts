@@ -9,7 +9,7 @@ import { savingPercent, tierPrices } from "@/lib/pricing";
 import { site } from "@/lib/site";
 import { demoDefaults } from "./demo-defaults";
 import { fill } from "./template";
-import { demo, faq, featureList, features, hero, integrations, layout, parseMeta, pricing, quotes, sections, waitlist } from "./index";
+import { demo, faq, faqList, featureList, features, hero, integrations, layout, parseMeta, pricing, quotes, sections, waitlist } from "./index";
 import { copy, demoSchema, headline, heroSchema, template } from "./schemas";
 
 const sectionIds = sections.map((section) => section.meta.id);
@@ -50,6 +50,39 @@ describe("content files", () => {
   it("put the concept disclaimer in the footer", () => {
     expect(render(layout.Body)).toContain("Linnet is a fictional product.");
     expect(layout.meta.footer.concept).toBe("Concept · self-initiated");
+  });
+});
+
+describe("quotes", () => {
+  it("carries five fictional quotes under the fictional label", () => {
+    expect(quotes.meta.items).toHaveLength(5);
+    expect(quotes.meta.label).toMatch(/^Fictional customers\./);
+  });
+
+  it("gives every person a first and last name for their initials", () => {
+    for (const item of quotes.meta.items) expect(item.name.split(" ").length).toBeGreaterThanOrEqual(2);
+  });
+});
+
+describe("faq", () => {
+  it("orders nine questions 1 to 9, each once", () => {
+    expect(faqList.map((item) => item.meta.order)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+  });
+
+  it("asks each question once, as a question", () => {
+    const questions = faqList.map((item) => item.meta.question);
+    expect(new Set(questions).size).toBe(questions.length);
+    for (const question of questions) expect(question.endsWith("?")).toBe(true);
+  });
+
+  it("says in the first answer that Linnet is a concept, and links the author", () => {
+    const first = render(faqList[0].Body);
+    expect(first).toContain("concept");
+    expect(first).toContain(`href="${site.author.url}"`);
+  });
+
+  it("answers every question in the body", () => {
+    for (const { Body } of faqList) expect(render(Body)).toMatch(/^<p>.+<\/p>$/);
   });
 });
 

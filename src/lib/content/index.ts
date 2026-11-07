@@ -2,6 +2,15 @@ import type { MDXContent } from "mdx/types";
 import { z } from "zod";
 import DemoBody, { meta as demoMeta } from "@/content/demo.mdx";
 import FaqBody, { meta as faqMeta } from "@/content/faq.mdx";
+import Faq01Body, { meta as faq01Meta } from "@/content/faq/01-real.mdx";
+import Faq02Body, { meta as faq02Meta } from "@/content/faq/02-who.mdx";
+import Faq03Body, { meta as faq03Meta } from "@/content/faq/03-currencies.mdx";
+import Faq04Body, { meta as faq04Meta } from "@/content/faq/04-tax.mdx";
+import Faq05Body, { meta as faq05Meta } from "@/content/faq/05-payments.mdx";
+import Faq06Body, { meta as faq06Meta } from "@/content/faq/06-hours.mdx";
+import Faq07Body, { meta as faq07Meta } from "@/content/faq/07-cancel.mdx";
+import Faq08Body, { meta as faq08Meta } from "@/content/faq/08-data.mdx";
+import Faq09Body, { meta as faq09Meta } from "@/content/faq/09-email.mdx";
 import FeaturesBody, { meta as featuresMeta } from "@/content/features.mdx";
 import CurrenciesBody, { meta as currenciesMeta } from "@/content/features/currencies.mdx";
 import ExportBody, { meta as exportMeta } from "@/content/features/export.mdx";
@@ -17,6 +26,7 @@ import QuotesBody, { meta as quotesMeta } from "@/content/quotes.mdx";
 import WaitlistBody, { meta as waitlistMeta } from "@/content/waitlist.mdx";
 import {
   demoSchema,
+  faqItemSchema,
   faqSchema,
   featureSchema,
   featuresSchema,
@@ -73,6 +83,19 @@ export const integrations = load("integrations.mdx", integrationsSchema, integra
 export const pricing = load("pricing.mdx", pricingSchema, pricingMeta, PricingBody);
 export const quotes = load("quotes.mdx", quotesSchema, quotesMeta, QuotesBody);
 export const faq = load("faq.mdx", faqSchema, faqMeta, FaqBody);
+
+/** The nine questions, in `order`. */
+export const faqList = [
+  load("faq/01-real.mdx", faqItemSchema, faq01Meta, Faq01Body),
+  load("faq/02-who.mdx", faqItemSchema, faq02Meta, Faq02Body),
+  load("faq/03-currencies.mdx", faqItemSchema, faq03Meta, Faq03Body),
+  load("faq/04-tax.mdx", faqItemSchema, faq04Meta, Faq04Body),
+  load("faq/05-payments.mdx", faqItemSchema, faq05Meta, Faq05Body),
+  load("faq/06-hours.mdx", faqItemSchema, faq06Meta, Faq06Body),
+  load("faq/07-cancel.mdx", faqItemSchema, faq07Meta, Faq07Body),
+  load("faq/08-data.mdx", faqItemSchema, faq08Meta, Faq08Body),
+  load("faq/09-email.mdx", faqItemSchema, faq09Meta, Faq09Body),
+].sort((a, b) => a.meta.order - b.meta.order);
 export const waitlist = load("waitlist.mdx", waitlistSchema, waitlistMeta, WaitlistBody);
 
 /** The page's sections in reading order, after the hero. */

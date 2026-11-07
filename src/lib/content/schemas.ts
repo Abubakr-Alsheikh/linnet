@@ -287,8 +287,16 @@ export const pricingSchema = z
   });
 export const faqSchema = z.strictObject({ ...sectionFields });
 
-// quotes.mdx: the header plus the always-visible fictional label. No body.
-export const quotesSchema = z.strictObject({ ...sectionFields, label: copy });
+// quotes.mdx: the header, the always-visible fictional label and five
+// fictional quotes. No body.
+export const quotesSchema = z.strictObject({
+  ...sectionFields,
+  label: copy,
+  items: z.array(z.strictObject({ quote: copy, name: copy, role: copy })).min(1),
+});
+
+// faq/*.mdx: one question each, ordered by `order`. The body is the answer.
+export const faqItemSchema = z.strictObject({ order: z.int().min(1), question: copy });
 
 const field = z.strictObject({ label: copy, hint: copy.optional() });
 
