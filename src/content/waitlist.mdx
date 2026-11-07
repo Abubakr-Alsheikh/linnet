@@ -1,0 +1,32 @@
+export const meta = {
+  id: "waitlist",
+  eyebrow: "Waitlist",
+  headline: { title: "Join the waitlist." },
+  fields: {
+    name: { label: "Name" },
+    email: { label: "Email", hint: "Only used to reply to you." },
+    team: {
+      label: "How do you work?",
+      options: [
+        { value: "solo", label: "Just me" },
+        { value: "studio", label: "A studio of 2 to 20" },
+        { value: "agency", label: "A larger team" },
+      ],
+      default: "solo",
+    },
+    currency: {
+      label: "Main currency",
+      options: [
+        { value: "EUR", label: "Euro" },
+        { value: "USD", label: "US dollar" },
+        { value: "GBP", label: "Pound sterling" },
+        { value: "other", label: "Something else" },
+      ],
+      default: "EUR",
+    },
+    note: { label: "What slows your invoicing down?", counter: "{n}/500" },
+    "bot-field": { label: "Leave this field empty" },
+  },
+};
+
+Linnet is a concept, so there is no beta to join. The form is real: it reaches Abubakr's inbox, and he reads every note.
