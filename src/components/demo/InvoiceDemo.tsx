@@ -24,6 +24,7 @@ import type { InvoiceFieldSchemas } from "@/lib/invoice/field-schemas";
 import { formatHundredths, formatShort, parseQuantity, parseRate, parseTaxRate } from "@/lib/invoice/parse";
 import { formatMoney, type Currency } from "@/lib/money";
 import { durations, ease } from "@/lib/motion";
+import { cn } from "@/lib/utils";
 import { Activity, type ActivityRow } from "./Activity";
 import { LineGroups, LineTable } from "./LineItems";
 import { StatusChip } from "./StatusChip";
@@ -371,7 +372,7 @@ export function InvoiceDemo({ content }: { content: DemoContent }) {
             <div className="mt-8">
               <LineTable {...linesProps} />
               <LineGroups {...linesProps} />
-              <div className={locked ? "invisible" : "mt-2 flex flex-wrap items-center gap-x-3 gap-y-1"}>
+              <div className={cn("mt-2 flex flex-wrap items-center gap-x-3 gap-y-1", locked && "invisible")}>
                 <Button
                   variant="ghost"
                   data-field="add"
