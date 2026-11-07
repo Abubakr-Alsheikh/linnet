@@ -1,15 +1,18 @@
-import { DemoSlot } from "@/components/demo/DemoSlot";
+import { InvoiceDemo } from "@/components/demo/InvoiceDemo";
 import { Headline } from "@/components/layout/Headline";
 import { Button } from "@/components/ui/button";
-import { hero } from "@/lib/content";
+import { demo, hero } from "@/lib/content";
 
 /**
  * The first screen. The headline is the LCP element: server-rendered text,
  * final at first paint, never animated in. Copy in columns 1-5 and the
- * invoice in 6-12 at `lg`; stacked below, copy first.
+ * invoice in 6-12 at `lg`; stacked below, copy first. The invoice is a
+ * client component, server-rendered in its starting state, so the page
+ * paints it before it hydrates; its footnote stays on the server.
  */
 export function Hero() {
   const { meta, Body } = hero;
+  const { meta: demoContent, Body: Footnote } = demo;
 
   return (
     <section
@@ -34,7 +37,12 @@ export function Hero() {
         </div>
         <p className="text-sm text-ink-muted max-lg:hidden">{meta.hint}</p>
       </div>
-      <DemoSlot className="lg:col-span-7" />
+      <div className="min-w-0 lg:col-span-7">
+        <InvoiceDemo content={demoContent} />
+        <div className="mx-auto mt-1 max-w-[640px] text-xs text-ink-muted">
+          <Footnote />
+        </div>
+      </div>
     </section>
   );
 }
