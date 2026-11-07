@@ -5,7 +5,9 @@ import { Hero } from "@/components/sections/Hero";
 import { Features } from "@/components/sections/Features";
 import { Integrations } from "@/components/sections/Integrations";
 import { Pricing } from "@/components/sections/Pricing";
-import { Faq, Quotes, Waitlist } from "@/components/sections/stubs";
+import { Faq } from "@/components/sections/Faq";
+import { Quotes } from "@/components/sections/Quotes";
+import { Waitlist } from "@/components/sections/stubs";
 import { layout } from "@/lib/content";
 
 /** The one page. A server component: only the interactive leaves inside it ship as client code. */
