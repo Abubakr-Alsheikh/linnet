@@ -13,6 +13,8 @@ export const site = {
   author: {
     name: "Abubakr Alsheikh",
     url: "https://abubakr-alsheikh.netlify.app",
+    /** The portfolio's contact section (anchor checked on 2026-11-07). */
+    contact: "https://abubakr-alsheikh.netlify.app/#contact",
   },
   repo: "https://github.com/Abubakr-Alsheikh/linnet",
   locale: "en-GB",

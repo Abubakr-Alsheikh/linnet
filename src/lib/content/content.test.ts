@@ -6,6 +6,7 @@ import { INTEGRATION_IDS } from "@/lib/integrations";
 import { STATUSES, createDemoState, evaluate } from "@/lib/invoice/demo-machine";
 import { formatMoney } from "@/lib/money";
 import { savingPercent, tierPrices } from "@/lib/pricing";
+import { NAME_MAX, NOTE_MAX, TEAMS, WAITLIST_CURRENCIES } from "@/lib/waitlist";
 import { site } from "@/lib/site";
 import { demoDefaults } from "./demo-defaults";
 import { fill } from "./template";
@@ -191,6 +192,24 @@ describe("demo.mdx", () => {
   it("rejects a client address outside .example", () => {
     const clients = [{ ...demo.meta.clients[0], email: "accounts@mosslane.com" }];
     expect(demoSchema.safeParse({ ...demo.meta, clients }).success).toBe(false);
+  });
+});
+
+describe("waitlist copy", () => {
+  it("names the same teams and currencies the waitlist module validates", () => {
+    expect(waitlist.meta.fields.team.options.map((option) => option.value)).toEqual([...TEAMS]);
+    expect(waitlist.meta.fields.currency.options.map((option) => option.value)).toEqual([...WAITLIST_CURRENCIES]);
+  });
+
+  it("states the limits the schema enforces", () => {
+    expect(waitlist.meta.errors.nameLong).toContain(String(NAME_MAX));
+    expect(waitlist.meta.errors.noteLong).toContain(String(NOTE_MAX));
+    expect(waitlist.meta.fields.note.counter).toBe(`{n}/${NOTE_MAX}`);
+  });
+
+  it("links the failure message to the portfolio", () => {
+    expect(waitlist.meta.failure.text).toContain(waitlist.meta.failure.link);
+    expect(site.author.contact.startsWith(site.author.url)).toBe(true);
   });
 });
 

@@ -323,4 +323,17 @@ export const waitlistSchema = z.strictObject({
     note: z.strictObject({ label: copy, counter: template("n") }),
     "bot-field": field,
   }),
+  optional: copy,
+  submit: copy,
+  sending: copy,
+  errors: z.strictObject({ emailMissing: copy, emailInvalid: copy, nameLong: copy, noteLong: copy }),
+  success: z.strictObject({ heading: copy, headingNamed: template("name"), body: copy }),
+  failure: z
+    .strictObject({ text: copy, link: copy })
+    .refine((failure) => splitAround(failure.text, failure.link) !== null, {
+      message: "The link must be part of the text.",
+      path: ["link"],
+    }),
 });
+
+export type WaitlistContent = z.output<typeof waitlistSchema>;
