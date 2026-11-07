@@ -112,6 +112,10 @@
 :root {
   color-scheme: light;
   --radius: 0.375rem;
+  /* The same values as `durations` in src/lib/motion.ts (motion.test.ts checks them) */
+  --duration-press: 120ms;
+  --duration-quick: 180ms;
+  --duration-base: 240ms;
   --canvas: #f1f2ee;
   --surface: #ffffff;
   --surface-2: #e8e9e3;
@@ -217,6 +221,43 @@
   button:not(:disabled),
   [role="button"]:not(:disabled) {
     cursor: pointer;
+  }
+}
+
+/* The page column: 1200 px wide at most, 16 / 32 / 48 px gutters. */
+@utility page-width {
+  @apply mx-auto w-full max-w-[1200px] px-4 sm:px-8 lg:px-12;
+}
+
+/*
+ * The sticky header gains its bottom rule once the page scrolls. A
+ * scroll-driven animation does it without JavaScript; browsers without
+ * scroll timelines show the rule all the time.
+ */
+@keyframes header-rule {
+  to {
+    border-bottom-color: var(--line);
+  }
+}
+
+@layer components {
+  .site-header {
+    border-bottom: 1px solid var(--line);
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .site-header {
+      border-bottom-color: transparent;
+      animation: header-rule linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 8px;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
   }
 }
 
