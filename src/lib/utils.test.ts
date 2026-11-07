@@ -5,6 +5,7 @@ describe("cn", () => {
   it("keeps a token font size next to a token colour", () => {
     expect(cn("text-display", "text-ink")).toBe("text-display text-ink");
     expect(cn("text-h2 font-display", "text-brand-ink")).toBe("text-h2 font-display text-brand-ink");
+    expect(cn("text-total", "text-ink")).toBe("text-total text-ink");
   });
 
   it("still resolves real conflicts, last one wins", () => {

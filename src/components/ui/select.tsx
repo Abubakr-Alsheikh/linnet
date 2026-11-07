@@ -4,9 +4,11 @@ import * as React from "react"
 import { Select as SelectPrimitive } from "radix-ui"
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { selectTriggerVariants, type SelectTriggerVariant } from "./select-trigger-styles"
 
 /**
- * shadcn/ui Select, restyled. The trigger is a 44 px field like Input; the
+ * shadcn/ui Select, restyled. The trigger is a 44 px field like Input, or
+ * inline text on an underline for the invoice (select-trigger-styles.ts); the
  * list floats on surface with shadow-float and a 12 px radius. Items show
  * the highlighted row on surface-2 and an inset focus ring for keyboard use.
  */
@@ -38,15 +40,13 @@ function SelectValue({
 function SelectTrigger({
   className,
   children,
+  variant = "field",
   ...props
-}: React.ComponentProps<typeof SelectPrimitive.Trigger>) {
+}: React.ComponentProps<typeof SelectPrimitive.Trigger> & { variant?: SelectTriggerVariant }) {
   return (
     <SelectPrimitive.Trigger
       data-slot="select-trigger"
-      className={cn(
-        "flex h-11 w-full items-center justify-between gap-2 rounded-lg border border-control bg-surface pr-2.5 pl-3 text-left text-base text-ink whitespace-nowrap transition-colors duration-(--duration-press) select-none disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-negative data-placeholder:text-ink-muted *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-        className
-      )}
+      className={cn(selectTriggerVariants({ variant }), className)}
       {...props}
     >
       {children}
@@ -62,10 +62,13 @@ function SelectContent({
   children,
   position = "item-aligned",
   align = "center",
+  inline = false,
   ...props
-}: React.ComponentProps<typeof SelectPrimitive.Content>) {
-  return (
-    <SelectPrimitive.Portal>
+}: React.ComponentProps<typeof SelectPrimitive.Content> & {
+  /** Render in place instead of in a portal, so the list stays inside its landmark (axe `region`). */
+  inline?: boolean
+}) {
+  const content = (
       <SelectPrimitive.Content
         data-slot="select-content"
         data-align-trigger={position === "item-aligned"}
@@ -87,8 +90,8 @@ function SelectContent({
         </SelectPrimitive.Viewport>
         <SelectScrollDownButton />
       </SelectPrimitive.Content>
-    </SelectPrimitive.Portal>
   )
+  return inline ? content : <SelectPrimitive.Portal>{content}</SelectPrimitive.Portal>
 }
 
 function SelectLabel({
