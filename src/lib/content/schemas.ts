@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { INTEGRATION_IDS } from "@/lib/integrations";
 import { STATUSES } from "@/lib/invoice/demo-machine";
 import { checkDescription, parseQuantity, parseRate, parseTaxRate } from "@/lib/invoice/parse";
 import { CURRENCIES } from "@/lib/money";
@@ -237,7 +238,16 @@ export const featureSchema = z.discriminatedUnion("diagram", [
 
 export type Feature = z.output<typeof featureSchema>;
 export type DiagramId = Feature["diagram"];
-export const integrationsSchema = z.strictObject({ ...sectionFields });
+// integrations.mdx: the header, the eight categories (ids from
+// src/lib/integrations.ts, each drawn by an icon) and the note under them.
+export const integrationsSchema = z.strictObject({
+  ...sectionFields,
+  items: z
+    .array(z.strictObject({ id: z.enum(INTEGRATION_IDS), name: copy, line: copy }))
+    .length(INTEGRATION_IDS.length)
+    .refine((items) => new Set(items.map((item) => item.id)).size === items.length, "List each integration once."),
+  note: copy,
+});
 export const pricingSchema = z.strictObject({ ...sectionFields });
 export const faqSchema = z.strictObject({ ...sectionFields });
 

@@ -2,6 +2,17 @@ export const meta = {
   id: "integrations",
   eyebrow: "Integrations",
   headline: { title: "Fits the tools you already use." },
+  items: [
+    { id: "bank-feeds", name: "Bank feeds", line: "Payments that reach your account find their invoice and mark it paid." },
+    { id: "card-payments", name: "Card payments", line: "A pay button on every invoice. The money goes to your own account." },
+    { id: "bank-transfer", name: "Bank transfer", line: "Your account details and a reference on the invoice, so transfers match without guessing." },
+    { id: "accounting-export", name: "Accounting export", line: "CSV for any spreadsheet, and UBL, the e-invoice format many accounting tools read." },
+    { id: "calendars", name: "Calendars", line: "A feed of due dates and retainer days for any calendar that reads iCal." },
+    { id: "email", name: "Email", line: "Invoices go out from your own address, and replies come back to you." },
+    { id: "time-tracking", name: "Time tracking", line: "Import hours as CSV from the tracker you already use." },
+    { id: "api", name: "API and webhooks", line: "Create invoices from your own tools and hear the moment one is paid." },
+  ],
+  note: "Shown as categories. Linnet is a concept, so none of these connect to a real service.",
 };
 
 Linnet talks to your bank, your payment provider, your calendar and your accountant's software through open formats and standard connections.

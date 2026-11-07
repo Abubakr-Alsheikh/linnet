@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
+import { INTEGRATION_IDS } from "@/lib/integrations";
 import { STATUSES, createDemoState, evaluate } from "@/lib/invoice/demo-machine";
 import { formatMoney } from "@/lib/money";
 import { site } from "@/lib/site";
@@ -47,6 +48,16 @@ describe("content files", () => {
   it("put the concept disclaimer in the footer", () => {
     expect(render(layout.Body)).toContain("Linnet is a fictional product.");
     expect(layout.meta.footer.concept).toBe("Concept · self-initiated");
+  });
+});
+
+describe("integrations", () => {
+  it("lists the eight categories once each, in the planned order", () => {
+    expect(integrations.meta.items.map((item) => item.id)).toEqual([...INTEGRATION_IDS]);
+  });
+
+  it("says they are categories, not real connections", () => {
+    expect(integrations.meta.note).toContain("none of these connect to a real service");
   });
 });
 
