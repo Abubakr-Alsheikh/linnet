@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { durations, ease, sendTimeline, springs } from "./motion";
+import { DIAGRAM_LAST_STEP, durations, ease, sendTimeline, springs, stagger } from "./motion";
 
 const css = readFileSync(new URL("../app/globals.css", import.meta.url), "utf8");
 
@@ -15,6 +15,8 @@ describe("motion presets", () => {
     expect(cssMs("duration-press")).toBe(durations.press * 1000);
     expect(cssMs("duration-quick")).toBe(durations.quick * 1000);
     expect(cssMs("duration-base")).toBe(durations.base * 1000);
+    expect(cssMs("duration-diagram-step")).toBe(durations.diagramStep * 1000);
+    expect(cssMs("diagram-stagger")).toBe(stagger.diagram * 1000);
   });
 
   it("matches the CSS ease-out curve", () => {
@@ -29,6 +31,7 @@ describe("motion presets", () => {
 
   it("keeps a diagram to 1.6 s at most", () => {
     expect(durations.diagram).toBeLessThanOrEqual(1.6);
+    expect(DIAGRAM_LAST_STEP * stagger.diagram + durations.diagramStep).toBeLessThanOrEqual(durations.diagram);
   });
 
   it("uses springs only", () => {

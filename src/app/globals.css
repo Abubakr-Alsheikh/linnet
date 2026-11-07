@@ -120,6 +120,8 @@
   --duration-press: 120ms;
   --duration-quick: 180ms;
   --duration-base: 240ms;
+  --duration-diagram-step: 420ms;
+  --diagram-stagger: 180ms;
   --canvas: #f1f2ee;
   --surface: #ffffff;
   --surface-2: #e8e9e3;
@@ -231,6 +233,20 @@
 /* The page column: 1200 px wide at most, 16 / 32 / 48 px gutters. */
 @utility page-width {
   @apply mx-auto w-full max-w-[1200px] px-4 sm:px-8 lg:px-12;
+}
+
+/*
+ * One step of a feature diagram. DiagramFrame sets data-phase on the frame:
+ * "from" snaps every step to its first frame (the step classes add
+ * `transition-none` there), "to" plays the steps back to their resting
+ * state, each `--step` stagger after the last. Transform, opacity and a
+ * line's dash offset only. The server HTML is the resting state.
+ */
+@utility dg-step {
+  transition-property: opacity, transform, translate, scale, rotate, stroke-dashoffset;
+  transition-duration: var(--duration-diagram-step);
+  transition-timing-function: var(--ease-out-quint);
+  transition-delay: calc(var(--step, 0) * var(--diagram-stagger));
 }
 
 /*

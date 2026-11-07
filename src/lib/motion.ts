@@ -9,7 +9,15 @@
  */
 
 /** Seconds, as Motion expects. */
-export const durations = { press: 0.12, quick: 0.18, base: 0.24, diagram: 1.6 } as const;
+export const durations = { press: 0.12, quick: 0.18, base: 0.24, diagramStep: 0.42, diagram: 1.6 } as const;
+
+/**
+ * A feature diagram plays its steps 0 to DIAGRAM_LAST_STEP, each one
+ * `stagger.diagram` after the last and lasting `durations.diagramStep`.
+ * The diagrams run on CSS transitions (the `dg-step` utility in
+ * globals.css), so the same numbers live there as custom properties.
+ */
+export const DIAGRAM_LAST_STEP = 4;
 
 /** `out` matches `--ease-out-quint` in globals.css. */
 export const ease = {
