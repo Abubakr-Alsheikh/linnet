@@ -2,6 +2,57 @@ export const meta = {
   id: "pricing",
   eyebrow: "Pricing",
   headline: { title: "One price per team. No per-invoice fees." },
+  toggle: { label: "Billing period", monthly: "Monthly", yearly: "Yearly", saving: "Save {percent}%" },
+  yearlyDiscount: 20,
+  price: "€{n}",
+  per: "/ month",
+  billed: { monthly: "Billed monthly", yearly: "Billed €{year} a year" },
+  announce: { monthly: "Showing monthly prices.", yearly: "Showing yearly prices." },
+  cta: "Join the waitlist",
+  featuredLabel: "For teams",
+  tiers: [
+    {
+      id: "solo",
+      name: "Solo",
+      who: "For one person",
+      monthly: 10,
+      features: [
+        "Unlimited invoices and clients",
+        "Euro, pounds and dollars",
+        "Card and bank transfer links",
+        "Reminders on your schedule",
+        "CSV export",
+      ],
+    },
+    {
+      id: "studio",
+      name: "Studio",
+      who: "For teams up to 5",
+      monthly: 25,
+      featured: true,
+      features: [
+        "Everything in Solo",
+        "Up to 5 people",
+        "Retainers that send themselves",
+        "Time import from CSV",
+        "Send from your own domain",
+      ],
+    },
+    {
+      id: "agency",
+      name: "Agency",
+      who: "For teams up to 20",
+      monthly: 60,
+      features: [
+        "Everything in Studio",
+        "Up to 20 people",
+        "Approval before sending",
+        "Access for your accountant",
+        "API and webhooks",
+      ],
+    },
+  ],
+  note: "Prices in euro, before VAT. They are illustrative: Linnet is a concept and sells nothing.",
 };
 
 Every plan sends unlimited invoices to unlimited clients.

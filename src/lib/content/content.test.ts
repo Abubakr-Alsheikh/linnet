@@ -5,8 +5,10 @@ import { describe, expect, it } from "vitest";
 import { INTEGRATION_IDS } from "@/lib/integrations";
 import { STATUSES, createDemoState, evaluate } from "@/lib/invoice/demo-machine";
 import { formatMoney } from "@/lib/money";
+import { savingPercent, tierPrices } from "@/lib/pricing";
 import { site } from "@/lib/site";
 import { demoDefaults } from "./demo-defaults";
+import { fill } from "./template";
 import { demo, faq, featureList, features, hero, integrations, layout, parseMeta, pricing, quotes, sections, waitlist } from "./index";
 import { copy, demoSchema, headline, heroSchema, template } from "./schemas";
 
@@ -48,6 +50,38 @@ describe("content files", () => {
   it("put the concept disclaimer in the footer", () => {
     expect(render(layout.Body)).toContain("Linnet is a fictional product.");
     expect(layout.meta.footer.concept).toBe("Concept · self-initiated");
+  });
+});
+
+describe("pricing", () => {
+  const { tiers, yearlyDiscount } = pricing.meta;
+
+  it("derives the COPY prices: 10/25/60 a month, 8/20/48 yearly, billed 96/240/576", () => {
+    const prices = tiers.map((tier) => tierPrices(tier.monthly, yearlyDiscount));
+    expect(prices.map((price) => price.monthly)).toEqual([10, 25, 60]);
+    expect(prices.map((price) => price.yearlyPerMonth)).toEqual([8, 20, 48]);
+    expect(prices.map((price) => price.billedYearly)).toEqual([96, 240, 576]);
+  });
+
+  it("advertises the saving the prices really give", () => {
+    for (const tier of tiers) {
+      expect(savingPercent(tier.monthly, tierPrices(tier.monthly, yearlyDiscount).yearlyPerMonth)).toBe(20);
+    }
+    expect(fill(pricing.meta.toggle.saving, { percent: 20 })).toBe("Save 20%");
+  });
+
+  it("features Studio only, with no popularity claim", () => {
+    expect(tiers.filter((tier) => tier.featured).map((tier) => tier.id)).toEqual(["studio"]);
+    expect(pricing.meta.featuredLabel).toBe("For teams");
+  });
+
+  it("uses the waitlist's team values as tier ids", () => {
+    const teams = waitlist.meta.fields.team.options.map((option) => option.value);
+    expect(tiers.map((tier) => tier.id)).toEqual(teams);
+  });
+
+  it("says the prices are illustrative", () => {
+    expect(pricing.meta.note).toContain("illustrative");
   });
 });
 

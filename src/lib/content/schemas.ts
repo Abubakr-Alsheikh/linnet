@@ -248,7 +248,43 @@ export const integrationsSchema = z.strictObject({
     .refine((items) => new Set(items.map((item) => item.id)).size === items.length, "List each integration once."),
   note: copy,
 });
-export const pricingSchema = z.strictObject({ ...sectionFields });
+// pricing.mdx: the header, the billing toggle, three tiers and the
+// illustrative-prices note. Tiers give monthly prices only; src/lib/pricing.ts
+// derives the yearly ones from `yearlyDiscount`. Tier ids are the waitlist's
+// team values, so each CTA can preselect "How do you work?".
+export const pricingSchema = z
+  .strictObject({
+    ...sectionFields,
+    toggle: z.strictObject({ label: copy, monthly: copy, yearly: copy, saving: template("percent") }),
+    yearlyDiscount: z.int().min(1).max(50),
+    price: template("n"),
+    per: copy,
+    billed: z.strictObject({ monthly: copy, yearly: template("year") }),
+    announce: z.strictObject({ monthly: copy, yearly: copy }),
+    cta: copy,
+    featuredLabel: copy,
+    tiers: z
+      .array(
+        z.strictObject({
+          id: z.enum(["solo", "studio", "agency"]),
+          name: copy,
+          who: copy,
+          monthly: z.int().positive(),
+          featured: z.literal(true).optional(),
+          features: z.array(copy).min(1),
+        }),
+      )
+      .length(3),
+    note: copy,
+  })
+  .refine((pricing) => pricing.tiers.every((tier) => (tier.monthly * (100 - pricing.yearlyDiscount)) % 100 === 0), {
+    message: "The yearly discount must leave every tier in whole euros.",
+    path: ["yearlyDiscount"],
+  })
+  .refine((pricing) => pricing.tiers.filter((tier) => tier.featured).length === 1, {
+    message: "Mark exactly one tier as featured.",
+    path: ["tiers"],
+  });
 export const faqSchema = z.strictObject({ ...sectionFields });
 
 // quotes.mdx: the header plus the always-visible fictional label. No body.
