@@ -6,7 +6,7 @@ import { STATUSES, createDemoState, evaluate } from "@/lib/invoice/demo-machine"
 import { formatMoney } from "@/lib/money";
 import { site } from "@/lib/site";
 import { demoDefaults } from "./demo-defaults";
-import { demo, faq, features, hero, integrations, layout, parseMeta, pricing, quotes, sections, waitlist } from "./index";
+import { demo, faq, featureList, features, hero, integrations, layout, parseMeta, pricing, quotes, sections, waitlist } from "./index";
 import { copy, demoSchema, headline, heroSchema, template } from "./schemas";
 
 const sectionIds = sections.map((section) => section.meta.id);
@@ -47,6 +47,35 @@ describe("content files", () => {
   it("put the concept disclaimer in the footer", () => {
     expect(render(layout.Body)).toContain("Linnet is a fictional product.");
     expect(layout.meta.footer.concept).toBe("Concept · self-initiated");
+  });
+});
+
+describe("features", () => {
+  it("lists six features with orders 1 to 6, each once", () => {
+    expect(featureList.map((feature) => feature.meta.order)).toEqual([1, 2, 3, 4, 5, 6]);
+  });
+
+  it("draws six different diagrams", () => {
+    const diagrams = featureList.map((feature) => feature.meta.diagram);
+    expect(new Set(diagrams).size).toBe(6);
+  });
+
+  it("gives each feature a paragraph and a diagram description", () => {
+    for (const { meta, Body } of featureList) {
+      expect(render(Body)).toMatch(/^<p>.+<\/p>$/);
+      expect(meta.diagramLabel.length).toBeGreaterThan(meta.title.length);
+    }
+  });
+
+  it("names the replay button after the feature", () => {
+    expect(features.meta.replay).toContain("{title}");
+  });
+
+  it("splits tracked hours into blocks that add up to the invoiced hours", () => {
+    const hours = featureList.find((feature) => feature.meta.diagram === "hours")?.meta;
+    if (hours?.diagram !== "hours") throw new Error("hours feature missing");
+    const total = hours.figure.blocks.reduce((sum, block) => sum + Number.parseFloat(block), 0);
+    expect(hours.figure.quantity.startsWith(`${total} h`)).toBe(true);
   });
 });
 

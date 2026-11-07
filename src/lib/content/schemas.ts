@@ -194,7 +194,49 @@ export type DemoContent = z.output<typeof demoSchema>;
 
 // features.mdx, integrations.mdx, pricing.mdx, faq.mdx: section headers.
 // The body is the section intro (empty for the FAQ).
-export const featuresSchema = z.strictObject({ ...sectionFields });
+export const featuresSchema = z.strictObject({ ...sectionFields, replay: template("title") });
+
+// features/*.mdx: one feature each. `diagram` picks the drawing in
+// src/components/diagrams and fixes the shape of `figure`, the short strings
+// drawn inside it. The body is the feature's paragraph.
+const featureFields = { order: z.int().min(1), title: copy, diagramLabel: copy };
+const triple = z.tuple([copy, copy, copy]);
+
+export const featureSchema = z.discriminatedUnion("diagram", [
+  z.strictObject({
+    ...featureFields,
+    diagram: z.literal("hours"),
+    figure: z.strictObject({ blocks: triple, line: copy, quantity: copy, amount: copy }),
+  }),
+  z.strictObject({
+    ...featureFields,
+    diagram: z.literal("reminders"),
+    figure: z.strictObject({ steps: z.tuple([copy, copy, copy, copy]), cancelled: copy }),
+  }),
+  z.strictObject({
+    ...featureFields,
+    diagram: z.literal("payments"),
+    figure: z.strictObject({ pay: copy, card: copy, transfer: copy, paid: copy }),
+  }),
+  z.strictObject({
+    ...featureFields,
+    diagram: z.literal("currencies"),
+    figure: z.strictObject({ amounts: triple, rate: copy }),
+  }),
+  z.strictObject({
+    ...featureFields,
+    diagram: z.literal("retainers"),
+    figure: z.strictObject({ months: z.tuple([copy, copy]), invoice: copy, paid: copy }),
+  }),
+  z.strictObject({
+    ...featureFields,
+    diagram: z.literal("export"),
+    figure: z.strictObject({ invoices: triple, file: copy }),
+  }),
+]);
+
+export type Feature = z.output<typeof featureSchema>;
+export type DiagramId = Feature["diagram"];
 export const integrationsSchema = z.strictObject({ ...sectionFields });
 export const pricingSchema = z.strictObject({ ...sectionFields });
 export const faqSchema = z.strictObject({ ...sectionFields });
