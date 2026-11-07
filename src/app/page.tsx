@@ -7,7 +7,7 @@ import { Integrations } from "@/components/sections/Integrations";
 import { Pricing } from "@/components/sections/Pricing";
 import { Faq } from "@/components/sections/Faq";
 import { Quotes } from "@/components/sections/Quotes";
-import { Waitlist } from "@/components/sections/stubs";
+import { Waitlist } from "@/components/sections/Waitlist";
 import { layout } from "@/lib/content";
 
 /** The one page. A server component: only the interactive leaves inside it ship as client code. */
