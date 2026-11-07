@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Familjen_Grotesk, Public_Sans } from "next/font/google";
+import { brand } from "@/lib/brand";
 import { site } from "@/lib/site";
 import { HEAD_CLEANUP_SCRIPT, THEME_SCRIPT } from "@/lib/theme";
 import "./globals.css";
@@ -35,8 +36,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f1f2ee" },
-    { media: "(prefers-color-scheme: dark)", color: "#121315" },
+    { media: "(prefers-color-scheme: light)", color: brand.light.canvas },
+    { media: "(prefers-color-scheme: dark)", color: brand.dark.canvas },
   ],
 };
 
